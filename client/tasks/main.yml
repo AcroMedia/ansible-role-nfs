@@ -1,0 +1,21 @@
+---
+- name: Install NFS utils
+  apt:
+    name:
+      - nfs-common
+    state: present
+    update_cache: yes
+
+- name: Check if mount point exists for NFS client
+  stat:
+    path: "{{ nfs_client_share_mount_point }}"
+  register: stat_nfs_mountpoint
+
+- name: Create fstab entry for NFS client
+  mount:
+    name: "{{ nfs_client_share_mount_point }}"
+    src: "{{ nfs_host }}:{{ nfs_client_share_mount_point }}"
+    fstype: nfs
+    opts: auto,noatime,nolock,bg,nfsvers=4,intr,tcp,actimeo=1800
+    state: mounted
+  when: stat_nfs_mountpoint.stat.exists == true

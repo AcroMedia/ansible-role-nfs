@@ -1,0 +1,11 @@
+---
+nfs_groups:
+  - { name: ubuntu, gid: 1000 }
+nfs_users:
+  - { name: ubuntu, uid: 1000 }
+
+nfs_secondary_groups: []
+
+## Example:
+# nfs_secondary_groups:
+#   - { user: bigcorp, group: bigcorp-srv }

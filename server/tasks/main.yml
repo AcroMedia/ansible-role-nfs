@@ -1,0 +1,14 @@
+---
+- name: Install NFS server
+  apt:
+    name:
+    - nfs-kernel-server
+    - nfs-common
+    state: present
+    update_cache: yes
+
+- name: Ensure nfs server is started and enabled on boot.
+  service:
+    name: nfs-kernel-server
+    state: started
+    enabled: yes

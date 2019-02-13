@@ -1,0 +1,28 @@
+---
+- name: Ensures the required nfs share groups exist on the server
+  group:
+    name: "{{ item.name }}"
+    gid: "{{ item.gid }}"
+    system: "{{ item.system|default(false) }}"
+  with_items:
+    - "{{ nfs_groups }}"
+
+- name: Ensures the required nfs share owners exist on the server
+  user:
+    name: "{{ item.name }}"
+    group: "{{ item.name }}"
+    append: true
+    uid: "{{ item.uid }}"
+    system: "{{ item.system|default(false) }}"
+    shell: "{{ item.shell|default('/usr/sbin/nologin') }}"
+  with_items:
+    - "{{ nfs_users }}"
+
+- name: Add users to secondary groups
+  user:
+    name: "{{ item.user }}"
+    group: "{{ item.user }}"
+    groups: "{{ item.secondary_group }}"
+    append: true
+  with_items:
+    "{{ nfs_secondary_groups }}"
