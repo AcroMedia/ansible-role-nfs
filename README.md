@@ -83,7 +83,7 @@ nfs_secondary_groups:
           - path: "{{ nfs_share_dir }}"
             owner: bigcorp
             group: bigcorp-srv
-            mode: 02775
+            mode: "2775"
             allow_from: '10.0.0.0/24'
 ```
 
