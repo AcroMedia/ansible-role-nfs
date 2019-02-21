@@ -1,31 +1,40 @@
 # Acro Media NFS Server/Client Ansible Roles
 
-* access
-* client
-* server
-* shares
+This role contains 4 mini roles that all work together (see example playbook below):
+* **acromedia.nfs/access**: Creates users / groups on clients + server
+* **acromedia.nfs/client**: Installs software on your client node(s)
+* **acromedia.nfs/server**: Installs software on your NFS server
+* **acromedia.nfs/shares**: Creates mount point(s) + share(s) on your server, and mounts the share to your clients
 
 
 ## Use case
 
 This is for when you want to serve a central uploads directory (i.e Drupal's sites/default/files dir) from one central NFS node, and mount it from all of your application nodes.
 
-## Requirements
 
-OS: Ubuntu >= 16.04
-
-### Users / Groups
-
-Linux User and Group IDs must end up being identical on each of the client nodes as well as the server node.
-
-If you've set up any web account users / groups yet, you need to go look and and see if they've all got the same UID/GIDs. If they are, great.  Proceed as in the examples. If not, the you need to do one of the following:
-- Scrub your servers and start over from scratch, running these roles first
-- Fix the uids/gids on all your nodes, and then go and fix ownership everywhere (its possible, but a PITA)
-- Define a new set users/groups that you can specify UIDs/GIDs for that are unused.
-
-### Security
+### A warning about security
 
 NFS has virtually **no** built in security. Make sure you configure your firewall to only allow access from fully trusted systems. Don't serve NFS from any system connected directly to the internet.
+
+
+## Requirements
+
+- **OS**: Ubuntu >= 16.04
+
+- **Firewall**: The following ports need to be open on your NFS server, but ***ONLY*** for access by your app nodes:
+    - 111 (tcp) - port mapper service
+    - 2049 (tcp) - nfs service
+    - If using the `nfs_mountd_port` option (see example below), then also the TCP port specified there. Mount.d normally uses a dynamic port, but this role can optionally wire it to a single port if necessary.
+
+
+## User and Group configuration
+
+For NFS to work, linux User and Group IDs must be identical on all of the client and server nodes. As long as you haven't created any users for your web application yet, this will be no problem.
+
+If you have configured web account users, you need to go look and and see if they've all got the same UID/GIDs. If they are, great.  Proceed as in the examples. If not, the you need to do one of the following:
+  - Scrub your servers and start over from scratch, running these roles first
+  - Fix the uids/gids on all your nodes, and then go and fix ownership everywhere (its possible, but a PITA)
+  - Define a new set users/groups that you can specify UIDs/GIDs for that are unused.
 
 ## Example playbook
 
@@ -75,6 +84,10 @@ nfs_secondary_groups:
 
     - name: Install the NFS service
       role: acromedia.nfs/server
+      vars:
+        # Optional: Force mount.d to listen on a single port, instead of letting it be dynamic.
+        # It makes firewall configuration simpler & safer.
+        nfs_mountd_port: 33333
 
     - name: Set up the NFS share(s)
       role: acromedia.nfs/shares

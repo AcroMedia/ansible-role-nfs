@@ -12,3 +12,30 @@
     name: nfs-kernel-server
     state: started
     enabled: yes
+
+- set_fact:
+    RPCMOUNTDOPTS_value: '"--manage-gids"'
+  when: "nfs_mountd_port == '0'"
+  tags: always
+
+- set_fact:
+    RPCMOUNTDOPTS_value: '"--port {{ nfs_mountd_port }}"'
+  when: "nfs_mountd_port != '0'"
+  tags: always
+
+- name: Set value for RPCMOUNTDOPTS in /etc/default/nfs-kernel-server to  '{{ RPCMOUNTDOPTS_value }}'
+  ini_file:
+    path: /etc/default/nfs-kernel-server
+    state: present
+    create: false
+    owner: root
+    group: root
+    mode: '644'
+    backup: true
+    no_extra_spaces: true
+    section: null
+    option: RPCMOUNTDOPTS
+    value: '{{ RPCMOUNTDOPTS_value }}'
+  notify:
+    - restart nfs config
+    - restart nfs

@@ -2,3 +2,8 @@
   service:
     name:  nfs-kernel-server
     state: restarted
+
+- name: restart nfs config
+  service:
+    name: nfs-config
+    state: restarted
