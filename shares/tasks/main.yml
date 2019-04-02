@@ -3,7 +3,7 @@
     that:
       - item.allow_from is not string
       - item.allow_from is iterable
-    fail_msg: The NFS role now requires that the value for 'nfs_shares -> allow_from' be a list of strings, instead of a single string. See nfs_shares example at https://github.com/AcroMedia/ansible-role-nfs
+    fail_msg: 'The NFS role now requires the value of nfs_shares.allow_from to be a list of strings, instead of a single string. See nfs_shares example at https://github.com/AcroMedia/ansible-role-nfs'
   with_items:
     - "{{ nfs_shares }}"
 
