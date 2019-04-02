@@ -97,7 +97,8 @@ nfs_secondary_groups:
             owner: bigcorp
             group: bigcorp-srv
             mode: "2775"
-            allow_from: '10.0.0.0/24'
+            allow_from:
+              - '10.0.0.0/24'
 ```
 
 `app_nodes.yml`:

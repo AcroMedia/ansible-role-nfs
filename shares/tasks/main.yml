@@ -1,4 +1,12 @@
 ---
+- assert:
+    that:
+      - item.allow_from is not string
+      - item.allow_from is iterable
+    fail_msg: The NFS role now requires that the value for 'nfs_shares -> allow_from' be a list of strings, instead of a single string. See nfs_shares example at https://github.com/AcroMedia/ansible-role-nfs
+  with_items:
+    - "{{ nfs_shares }}"
+
 - name: Create the share path {{ item.path }}
   file:
     state: directory
@@ -10,13 +18,12 @@
   with_items:
     - "{{ nfs_shares }}"
 
-- name: Export the NFS share for {{ item.path }}
-  lineinfile:
+- name: Configure /etc/exports
+  template:
+    src: templates/etc/exports.j2
     dest: /etc/exports
-    line: "{{ item.path }} {{ item.allow_from }}(rw,sync,no_subtree_check)"
-    state: present
-    create: yes
-    backup: yes
+    owner: root
+    group: root
+    mode: 0644
+    backup: true
   notify: restart nfs
-  with_items:
-    - "{{ nfs_shares }}"

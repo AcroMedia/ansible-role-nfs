@@ -1,0 +1,6 @@
+# {{ ansible_managed }}
+# See https://github.com/AcroMedia/ansible-role-nfs
+{% for share_entry in nfs_shares %}
+{{ share_entry.path }}{% for allowed_host in share_entry.allow_from %} {{ allowed_host }}(rw,sync,no_subtree_check){% endfor %}
+
+{% endfor %}
