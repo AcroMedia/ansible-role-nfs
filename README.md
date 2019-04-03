@@ -19,12 +19,20 @@ NFS has virtually **no** built in security. Make sure you configure your firewal
 
 ## Requirements
 
-- **OS**: Ubuntu >= 16.04
+- **Your playbook must gather facts.**
+
+- **OS**: Ubuntu >= 16.04, or Red Hat / CentOS 6
 
 - **Firewall**: The following ports need to be open on your NFS server, but ***ONLY*** for access by your app nodes:
     - 111 (tcp) - port mapper service
     - 2049 (tcp) - nfs service
     - If using the `nfs_mountd_port` option (see example below), then also the TCP port specified there. Mount.d normally uses a dynamic port, but this role can optionally wire it to a single port if necessary.
+
+
+- **Share / mount paths**:
+  - The server role creates the path to the shared directory on the NFS server if it doesn't exist.
+  - The client role does NOT create the path to the mount point on the client side, since the correct permissions + ownership leading to your mount point may not be trivial. This can be a catch 22 if the nfs client role exists in your playbook before any virtual host directory structure is created. The easiest way around this is to plan on running run your app node playbook twice. The client role creates the necessary fstab entry and mounts the share once the mount point path exists.
+  - When creating an NFS share on Red Hat, keep an eye out for overly restrictive home directory permissions. If your nfs host user directory was created with mode 0700, the client wont' be able to mount it until you open up the mode on the directory to at least 0711 so NFS can traverse into it.
 
 
 ## User and Group configuration
@@ -112,7 +120,7 @@ nfs_secondary_groups:
       role: acromedia.nfs/access
       # nfs_groups: See group_vars/all.yml
 
-    - name: Install NFS client software & Mount point
+    - name: Install NFS client software & create the fstab entry.
       role: acromedia.nfs/client
       vars:
         nfs_client_share_mount_point: "{{ nfs_share_dir }}"

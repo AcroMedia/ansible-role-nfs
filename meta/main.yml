@@ -9,6 +9,9 @@ galaxy_info:
       versions:
         - xenial
         - bionic
+    - name: EL
+      versions:
+        - 6
   galaxy_tags:
     - nfs
 dependencies: []

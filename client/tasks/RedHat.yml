@@ -1,0 +1,8 @@
+---
+- name: Install NFS utils
+  yum:
+    name:
+      - nfs-utils
+      - nfs-utils-lib
+    state: present
+    update_cache: yes

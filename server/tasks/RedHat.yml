@@ -1,0 +1,31 @@
+---
+- name: Install NFS utilities
+  yum:
+    name:
+      - nfs-utils
+      - nfs-utils-lib
+    state: present
+    update_cache: true
+
+- name: Ensure rpcbind service is started and enabled on boot
+  service:
+    name: rpcbind
+    state: started
+    enabled: true
+
+- name: Ensure nfs service is started and enabled on boot
+  service:
+    name: nfs
+    state: started
+    enabled: true
+
+- name: Configure /etc/sysconfig/nfs
+  template:
+    src: templates/etc/sysconfig/nfs.j2
+    dest: /etc/sysconfig/nfs
+    owner: root
+    group: root
+    mode: 0644
+    backup: true
+  notify:
+    - restart nfs

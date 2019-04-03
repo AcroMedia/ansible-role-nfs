@@ -1,0 +1,2 @@
+---
+nfs_client_remote_export: "{{ nfs_client_share_mount_point }}"

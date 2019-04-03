@@ -1,0 +1,26 @@
+---
+- name: Install NFS server
+  apt:
+    name:
+    - nfs-kernel-server
+    - nfs-common
+    state: present
+    update_cache: yes
+
+- name: Ensure nfs server is started and enabled on boot.
+  service:
+    name: nfs-kernel-server
+    state: started
+    enabled: yes
+
+- name: Configure /etc/default/nfs-kernel-server
+  template:
+    src: templates/etc/default/nfs-kernel-server.j2
+    dest: /etc/default/nfs-kernel-server
+    owner: root
+    group: root
+    mode: 0644
+    backup: true
+  notify:
+    - restart nfs config
+    - restart nfs

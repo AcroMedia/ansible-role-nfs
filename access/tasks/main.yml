@@ -1,4 +1,6 @@
 ---
+- include_vars: "vars/{{ ansible_os_family }}.yml"
+
 - name: Ensures the required nfs share groups exist on the server
   group:
     name: "{{ item.name }}"
@@ -14,7 +16,8 @@
     append: true
     uid: "{{ item.uid }}"
     system: "{{ item.system|default(false) }}"
-    shell: "{{ item.shell|default('/usr/sbin/nologin') }}"
+    shell: "{{ item.shell|default(path_to_nologin) }}"
+    create_home: "{{ not (item.system|default(false)) }}"
   with_items:
     - "{{ nfs_users }}"
 
