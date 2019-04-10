@@ -5,6 +5,7 @@
   stat:
     path: "{{ nfs_client_share_mount_point }}"
   register: stat_nfs_mountpoint
+  when: nfs_client_create_fstab_entry == true
 
 - name: Create fstab entry for NFS client
   mount:
@@ -13,4 +14,5 @@
     fstype: nfs
     opts: auto,noatime,nolock,bg,nfsvers=4,intr,tcp,actimeo=1800
     state: mounted
-  when: stat_nfs_mountpoint.stat.exists == true
+  when: nfs_client_create_fstab_entry == true
+    and stat_nfs_mountpoint.stat.exists == true

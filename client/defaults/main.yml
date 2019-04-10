@@ -1,2 +1,4 @@
 ---
 nfs_client_remote_export: "{{ nfs_client_share_mount_point }}"
+nfs_client_install_software: true
+nfs_client_create_fstab_entry: true

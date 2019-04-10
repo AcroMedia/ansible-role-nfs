@@ -5,3 +5,4 @@
       - nfs-common
     state: present
     update_cache: yes
+  when: nfs_client_install_software == true
