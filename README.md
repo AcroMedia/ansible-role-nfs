@@ -28,11 +28,12 @@ NFS has virtually **no** built in security. Make sure you configure your firewal
     - 2049 (tcp) - nfs service
     - If using the `nfs_mountd_port` option (see example below), then also the TCP port specified there. Mount.d normally uses a dynamic port, but this role can optionally wire it to a single port if necessary.
 
-
 - **Share / mount paths**:
   - The server role creates the path to the shared directory on the NFS server if it doesn't exist.
   - The client role does NOT create the path to the mount point on the client side, since the correct permissions + ownership leading to your mount point may not be trivial. This can be a catch 22 if the nfs client role exists in your playbook before any virtual host directory structure is created. The easiest way around this is to plan on running run your app node playbook twice. The client role creates the necessary fstab entry and mounts the share once the mount point path exists.
   - When creating an NFS share on Red Hat, keep an eye out for overly restrictive home directory permissions. If your nfs host user directory was created with mode 0700, the client wont' be able to mount it until you open up the mode on the directory to at least 0711 so NFS can traverse into it.
+
+- **Domain**: All of your machines must use the same domain name for their internal hostnames. For example if your NFS host server's full hostname is foo.exampledomain, then all the connecting client hosts must also be on the exampledomain domain, otherwise your mounted files will end up with "nobody:nobody" ownership, no matter who owns the files on the NFS host. Hint: Keep an eye on your syslog for messages from 'idmap'.
 
 
 ## User and Group configuration
