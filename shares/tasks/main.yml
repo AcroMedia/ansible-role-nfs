@@ -7,7 +7,7 @@
   with_items:
     - "{{ nfs_shares }}"
 
-- name: Create the share path {{ item.path }}
+- name: Create the share directory
   file:
     state: directory
     path: "{{ item.path }}"
