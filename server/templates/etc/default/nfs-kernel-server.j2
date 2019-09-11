@@ -16,7 +16,7 @@ RPCNFSDPRIORITY=0
 RPCMOUNTDOPTS="--port {{ nfs_mountd_port }}"
 {% else %}
 RPCMOUNTDOPTS="--manage-gids"
-{% fi %}
+{% endif %}
 
 # Do you want to start the svcgssd daemon? It is only required for Kerberos
 # exports. Valid alternatives are "yes" and "no"; the default is "no".
