@@ -1,8 +1,7 @@
 ---
 - name: Install NFS utils
   apt:
-    name:
-      - nfs-common
+    name: "{{ nfs_client_packages }}"
     state: present
     update_cache: yes
   when: nfs_client_install_software == true

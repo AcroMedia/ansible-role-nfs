@@ -1,0 +1,5 @@
+---
+# RedHat/CentOS 6-specific
+nfs_client_packages:
+  - nfs-utils
+  - nfs-utils-lib

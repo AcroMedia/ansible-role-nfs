@@ -1,0 +1,4 @@
+---
+# Only tested on Ubuntu 16.04 and 18.04, but may work for other versions of Debian/Ubuntu
+nfs_client_packages:
+  - nfs-common

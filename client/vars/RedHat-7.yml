@@ -1,0 +1,4 @@
+---
+# RedHat/CentOS 7-specific
+nfs_client_packages:
+  - nfs-utils
