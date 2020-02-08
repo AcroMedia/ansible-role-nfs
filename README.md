@@ -91,13 +91,6 @@ nfs_secondary_groups:
       role: acromedia.nfs/access
       # nfs_groups: See group_vars/all.yml
 
-    - name: Install the NFS service
-      role: acromedia.nfs/server
-      vars:
-        # Optional: Force mount.d to listen on a single port, instead of letting it be dynamic.
-        # It makes firewall configuration simpler & safer.
-        nfs_mountd_port: 33333
-
     - name: Set up the NFS share(s)
       role: acromedia.nfs/shares
       vars:
@@ -108,6 +101,14 @@ nfs_secondary_groups:
             mode: "2775"
             allow_from:
               - '10.0.0.0/24'
+
+    - name: Install the NFS service
+      role: acromedia.nfs/server
+      vars:
+        # Optional: Force mount.d to listen on a single port, instead of letting it be dynamic.
+        # It makes firewall configuration simpler & safer.
+        nfs_mountd_port: 33333
+
 ```
 
 `app_nodes.yml`:

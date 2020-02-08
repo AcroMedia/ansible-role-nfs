@@ -13,6 +13,9 @@
     state: started
     enabled: yes
 
+- set_fact:
+    nfs_service_is_installed: true  # Because the restart handler in template config may get called before we actually install the service, we need to put a "when" on the handler.
+
 - name: Configure /etc/default/nfs-kernel-server
   template:
     src: templates/etc/default/nfs-kernel-server.j2
