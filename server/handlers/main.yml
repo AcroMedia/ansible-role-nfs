@@ -2,8 +2,10 @@
   service:
     name:  "{{ nfs_daemon_name }}"
     state: restarted
+  when: nfs_service_is_installed | default(False) | bool
 
 - name: restart nfs config
   service:
     name: nfs-config
     state: restarted
+  when: nfs_service_is_installed | default(False) | bool
