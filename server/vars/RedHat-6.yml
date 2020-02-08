@@ -1,0 +1,6 @@
+---
+# RedHat/CentOS 6-specific
+nfs_daemon_name: nfs
+nfs_daemon_packages:
+  - nfs-utils
+  - nfs-utils-lib

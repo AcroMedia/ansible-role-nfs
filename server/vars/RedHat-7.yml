@@ -1,0 +1,5 @@
+---
+# RedHat/CentOS 7-specific
+nfs_daemon_name: nfs
+nfs_client_packages:
+  - nfs-utils

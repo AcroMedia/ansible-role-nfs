@@ -1,9 +1,7 @@
 ---
 - name: Install NFS utilities
   yum:
-    name:
-      - nfs-utils
-      - nfs-utils-lib
+    name: "{{ nfs_daemon_packages }}"
     state: present
     update_cache: true
 
@@ -15,7 +13,7 @@
 
 - name: Ensure nfs service is started and enabled on boot
   service:
-    name: nfs
+    name: "{{ nfs_daemon_name }}"
     state: started
     enabled: true
 

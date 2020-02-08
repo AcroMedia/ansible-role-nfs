@@ -1,2 +1,6 @@
 ---
+# Debian / Ubuntu
 nfs_daemon_name: nfs-kernel-server
+nfs_daemon_packages:
+  - nfs-kernel-server
+  - nfs-common
