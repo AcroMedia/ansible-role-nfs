@@ -24,7 +24,7 @@
     name: "{{ nfs_client_share_mount_point }}"
     src: "{{ nfs_host }}:{{ nfs_client_remote_export }}"
     fstype: nfs
-    opts: auto,noatime,nolock,bg,nfsvers=4,intr,tcp,actimeo=1800
+    opts: "{{ nfs_client_mount_opts }}"
     state: mounted
   when: nfs_client_create_fstab_entry == true
     and stat_nfs_mountpoint.stat.exists == true
