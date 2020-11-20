@@ -1,0 +1,8 @@
+---
+- name: Verify role
+  hosts: all
+  become: yes
+
+  tasks:
+
+
