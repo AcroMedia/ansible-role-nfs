@@ -1,5 +1,7 @@
 # Acro Media NFS Server/Client Ansible Roles
 
+![.github/workflows/molecule.yml](https://github.com/AcroMedia/ansible-role-nfs/workflows/.github/workflows/molecule.yml/badge.svg)
+
 This role contains 4 mini roles that all work together (see example playbook below):
 * **acromedia.nfs/access**: Creates users / groups on clients + server
 * **acromedia.nfs/client**: Installs software on your client node(s)
