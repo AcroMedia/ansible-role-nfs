@@ -1,7 +1,49 @@
 ---
-- name: Converge
+- name: Converge I - Gather facts for all hosts (as its own play)
   hosts: all
   become: true
   gather_facts: true
+
+- name: Gather Facts II - Configure the NFS server
+  hosts: file_server
+  gather_facts: false
+  become: true
   roles:
-    - role: ansible-role-nfs
+    - name: Configure users + groups for NFS -- UIDs/GIDs must be identical to those on the client machines
+      role: ansible-role-nfs/access
+      # nfs_groups: See group_vars/all.yml
+
+    - name: Set up the NFS share(s)
+      role: ansible-role-nfs/shares
+      vars:
+        nfs_shares:
+          - path: "{{ nfs_share_dir }}"
+            owner: bigcorp
+            group: bigcorp-srv
+            mode: "2775"
+            allow_from:
+              - '10.0.0.0/8'
+              - '172.16.0.0/12'
+              - '192.168.0.0/16'
+
+    - name: Install the NFS service
+      role: ansible-role-nfs/server
+      vars:
+        # Optional: Force mount.d to listen on a single port, instead of letting it be dynamic.
+        # It makes firewall configuration simpler & safer.
+        nfs_mountd_port: 33333
+
+- name: Converge III - Configure NFS client
+  hosts: app_node
+  gather_facts: false
+  become: true
+  roles:
+    - name: Configure users + groups for NFS
+      role: ansible-role-nfs/access
+      # nfs_groups: See group_vars/all.yml
+
+    - name: Install NFS client software & create the fstab entry.
+      role: ansible-role-nfs/client
+      vars:
+        nfs_client_share_mount_point: "{{ nfs_share_dir }}"
+        nfs_host: "{{ hostvars[file_server]['ansible_default_ipv4']['address'] }}"

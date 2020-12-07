@@ -9,6 +9,7 @@ platforms:
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - ./opt/:/opt:rw
     privileged: true
     pre_build_image: true
 #    instance_raw_config_args:

@@ -20,7 +20,7 @@ nfs_users:
     uid: 889
     system: true
 
-nfs_share_dir: /var/www/bigcorp/wwwroot/sites/default/files
+nfs_share_dir: /opt/nfs-share
 
 # In our case, it's necessary for our main user to also be part of the group that writes the files to the share.
 nfs_secondary_groups:
