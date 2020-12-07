@@ -1,1 +1,28 @@
 ---
+# Variables required by the "nfs-access" role, used by both playbooks:
+nfs_users:
+    # bigcorp is the user that owns the non-writeable files on our web server.
+  - name: bigcorp
+    gid: 1003
+    system: false
+
+    # bigcorp-srv is what our PHP FPM process runs as.
+  - name: bigcorp-srv
+    gid: 999
+    system: true
+
+nfs_groups:
+  - name: bigcorp
+    uid: 1003
+    system: false
+
+  - name: bigcorp-srv
+    uid: 999
+    system: true
+
+nfs_share_dir: /var/www/bigcorp/wwwroot/sites/default/files
+
+# In our case, it's necessary for our main user to also be part of the group that writes the files to the share.
+nfs_secondary_groups:
+  - user: bigcorp
+    secondary_group: bigcorp-srv
