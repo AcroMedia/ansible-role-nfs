@@ -10,8 +10,12 @@
   loop_control:
     loop_var: version_specific_vars_file
 
-- name: Install packages
+- name: Install nfs client packages
   include_tasks: "tasks/{{ ansible_os_family }}.yml"
+
+- name: Build and install amazon-efs-utils
+  include_tasks: "tasks/{{ ansible_os_family }}.amazon-efs-utils.yml"
+  when: nfs_client_mount_fstype == 'efs'
 
 - name: Check if mount point exists for NFS client
   stat:
@@ -21,9 +25,9 @@
 
 - name: Create fstab entry for NFS client
   mount:
-    name: "{{ nfs_client_share_mount_point }}"
-    src: "{{ nfs_host }}:{{ nfs_client_remote_export }}"
-    fstype: nfs
+    path: "{{ nfs_client_share_mount_point }}"     # Which local folder on the machine does the remote share get mounted to? Used to be called 'name' or 'dest'.
+    src: "{{ nfs_client_mount_src }}"
+    fstype: "{{ nfs_client_mount_fstype }}"
     opts: "{{ nfs_client_mount_opts }}"
     state: mounted
   when: nfs_client_create_fstab_entry == true

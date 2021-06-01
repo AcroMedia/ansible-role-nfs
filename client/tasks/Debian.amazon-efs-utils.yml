@@ -1,0 +1,29 @@
+---
+- name: Install efs tool build prerequisites
+  apt:
+    name:
+      - git
+      - binutils
+    state: present
+
+- name: Download efs-utils
+  git:
+    repo: https://github.com/aws/efs-utils
+    dest: "{{ nfs_client_efsutils_src_dir }}"
+    update: no
+
+- name: Build efs-utils
+  shell: "{{ nfs_client_efsutils_src_dir }}/build-deb.sh"
+  args:
+    chdir: "{{ nfs_client_efsutils_src_dir }}"
+    creates: "{{ nfs_client_efsutils_src_dir }}/build/debbuild/amazon-efs-utils*deb"
+
+- name: Locate newly built deb package with find, as it will have a version number in it
+  shell: >
+    find {{ nfs_client_efsutils_src_dir }}/build/debbuild -name 'amazon-efs-utils-*.deb' -print -quit
+  register: efs_utils_find_result
+
+- name: Install the amazon-efs-utils deb package
+  apt:
+    deb: "{{ efs_utils_find_result.stdout }}"
+    state: present
