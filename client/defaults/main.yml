@@ -3,5 +3,14 @@ nfs_client_remote_export: "{{ nfs_client_share_mount_point }}"
 nfs_client_install_software: true
 nfs_client_create_fstab_entry: true
 nfs_client_mount_opts: 'auto,noatime,nolock,bg,nfsvers=4,intr,tcp,actimeo=1800'
-# for AWS EFS, use:
+nfs_client_mount_fstype: nfs
+nfs_client_mount_src: "{{ nfs_host }}:{{ nfs_client_remote_export }}"
+nfs_client_efsutils_src_dir: /usr/local/src/aws-efs-utils   # Where to download and keep the build source
+
+# For AWS EFS with a single mount point, use:
 #   nfs_client_mount_opts: 'nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport'
+
+# For AWS EFS with one or more EFS Access Points, use:
+#   nfs_client_mount_opts: '_netdev,tls,accesspoint={{ efs_access_point_id }}'
+#   nfs_client_mount_fstype: efs    # <<<<<<< Won't work unless amazon-efs-utils has been installed
+#   nfs_client_mount_src: "{{ efs_filesystem_id }}"
