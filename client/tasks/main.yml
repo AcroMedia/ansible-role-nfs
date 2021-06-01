@@ -25,7 +25,7 @@
 
 - name: Create fstab entry for NFS client
   mount:
-    name: "{{ nfs_client_share_mount_point }}"     #  Does the mount module actually have a name property? This doesn't seem to do anything ??
+    path: "{{ nfs_client_share_mount_point }}"     # Which local folder on the machine does the remote share get mounted to? Used to be called 'name' or 'dest'.
     src: "{{ nfs_client_mount_src }}"
     fstype: "{{ nfs_client_mount_fstype }}"
     opts: "{{ nfs_client_mount_opts }}"
