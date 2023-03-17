@@ -9,3 +9,4 @@
     name: nfs-config
     state: restarted
   when: nfs_service_is_installed | default(False) | bool
+  ignore_errors: true   # Quick and dirty band-aid until https://github.com/AcroMedia/ansible-role-nfs/issues/5 is addressed properly.
