@@ -128,3 +128,7 @@ nfs_secondary_groups:
         nfs_client_share_mount_point: "{{ nfs_share_dir }}"
         nfs_host: 10.0.0.50
 ```
+
+@TODO: Create Drupal example with public, private, temp mount points on Ec2
+
+@TODO: Create Drupal example with public, private, temp mount points on EFS With Access Points
