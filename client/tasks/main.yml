@@ -13,7 +13,7 @@
 - name: Install nfs client packages
   include_tasks: "tasks/{{ ansible_os_family }}.yml"
 
-- name: Build and install amazon-efs-utils
+- name: Build and install amazon-efs-utils (version {{ nfs_client_efsutils_version }})
   include_tasks: "tasks/{{ ansible_os_family }}.amazon-efs-utils.yml"
   when: nfs_client_mount_fstype == 'efs'
 

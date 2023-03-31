@@ -11,6 +11,9 @@
     repo: https://github.com/aws/efs-utils
     dest: "{{ nfs_client_efsutils_src_dir }}"
     update: no
+    version: "{{ nfs_client_efsutils_version }}"
+    depth: 1
+    force: true
 
 - name: Build efs-utils
   shell: "{{ nfs_client_efsutils_src_dir }}/build-deb.sh"
@@ -18,7 +21,7 @@
     chdir: "{{ nfs_client_efsutils_src_dir }}"
     creates: "{{ nfs_client_efsutils_src_dir }}/build/debbuild/amazon-efs-utils*deb"
 
-- name: Locate newly built deb package with find, as it will have a version number in it
+- name: Locate the newly built deb package
   shell: >
     find {{ nfs_client_efsutils_src_dir }}/build/debbuild -name 'amazon-efs-utils-*.deb' -print -quit
   register: efs_utils_find_result
