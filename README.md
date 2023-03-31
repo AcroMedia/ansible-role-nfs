@@ -1,5 +1,7 @@
 # Acro Media NFS Server/Client Ansible Roles
 
+![.github/workflows/molecule.yml](https://github.com/AcroMedia/ansible-role-nfs/workflows/.github/workflows/molecule.yml/badge.svg)
+
 This role contains 4 mini roles that all work together (see example playbook below):
 * **acromedia.nfs/access**: Creates users / groups on clients + server
 * **acromedia.nfs/client**: Installs software on your client node(s)
@@ -51,24 +53,24 @@ If you have configured web account users, you need to go look and and see if the
 ```yaml
 ---
 # Variables required by the "nfs-access" role, used by both playbooks:
-nfs_users:
+nfs_groups:
     # bigcorp is the user that owns the non-writeable files on our web server.
   - name: bigcorp
-    gid: 1003
+    gid: 2889
     system: false
 
     # bigcorp-srv is what our PHP FPM process runs as.
   - name: bigcorp-srv
-    gid: 999
+    gid: 889
     system: true
 
-nfs_groups:
+nfs_users:
   - name: bigcorp
-    uid: 1003
+    uid: 2889
     system: false
 
   - name: bigcorp-srv
-    uid: 999
+    uid: 889
     system: true
 
 nfs_share_dir: /var/www/bigcorp/wwwroot/sites/default/files
